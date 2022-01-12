@@ -1,10 +1,31 @@
+<script context="module">
+    export async function load({fetch}) {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts")
+        const guides = await response.json()
+        if(response.ok) {
+            return{
+                props:{
+                    // guides: guides,
+                    guides
+                }
+            }
+        }
+        return{
+            status: response.status,
+            error: new Error("Could not fetch our API")
+        }
+    }
+</script>
+
+<script>
+    export let guides;
+</script>
 
 <div class="guides">
     <ul>
-        <li><a href="/">guide</a></li>
-        <li><a href="/">guide</a></li>
-        <li><a href="/">guide</a></li>
-        <li><a href="/">guide</a></li>
+        {#each guides as guide}
+            <li><a href={`/guides/${guide.id}`}>{guide.title}</a></li>
+        {/each}
     </ul>
 </div>
 
